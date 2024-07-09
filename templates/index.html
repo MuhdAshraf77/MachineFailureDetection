@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Failure Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Machine Failure Detection</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/bulk_upload">Bulk Upload</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <form action="/predict" method="post" id="predictForm">
+            <div class="slider-container">
+                <label for="S5">S5:</label>
+                <input type="range" id="S5" name="S5" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S5', 'S5_input')">
+                <input type="number" id="S5_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S5_input', 'S5')">
+            </div>
+            <div class="slider-container">
+                <label for="S8">S8:</label>
+                <input type="range" id="S8" name="S8" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S8', 'S8_input')">
+                <input type="number" id="S8_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S8_input', 'S8')">
+            </div>
+            <div class="slider-container">
+                <label for="S13">S13:</label>
+                <input type="range" id="S13" name="S13" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S13', 'S13_input')">
+                <input type="number" id="S13_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S13_input', 'S13')">
+            </div>
+            <div class="slider-container">
+                <label for="S15">S15:</label>
+                <input type="range" id="S15" name="S15" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S15', 'S15_input')">
+                <input type="number" id="S15_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S15_input', 'S15')">
+            </div>
+            <div class="slider-container">
+                <label for="S16">S16:</label>
+                <input type="range" id="S16" name="S16" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S16', 'S16_input')">
+                <input type="number" id="S16_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S16_input', 'S16')">
+            </div>          
+            <div class="slider-container">
+                <label for="S19">S19:</label>
+                <input type="range" id="S19" name="S19" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S19', 'S19_input')">
+                <input type="number" id="S19_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S19_input', 'S19')">
+            </div>
+            <div class="slider-container">
+                <label for="S18">S18:</label>
+                <input type="range" id="S18" name="S18" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S18', 'S18_input')">
+                <input type="number" id="S18_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S18_input', 'S18')">
+            </div>
+            <div class="slider-container">
+                <label for="MACHINE_AGE">Machine Age:</label>
+                <input type="range" id="MACHINE_AGE" name="MACHINE_AGE" min="0" max="10000" step="1" value="0" oninput="syncSliderWithInput('MACHINE_AGE', 'MACHINE_AGE_input')">
+                <input type="number" id="MACHINE_AGE_input" min="0" max="10000" step="1" value="0" oninput="syncInputWithSlider('MACHINE_AGE_input', 'MACHINE_AGE')">
+            </div>
+            <div class="slider-container">
+                <label for="WELL_GROUP">Well Group:</label>
+                <input type="range" id="WELL_GROUP" name="WELL_GROUP" min="0" max="10" step="1" value="0" oninput="syncSliderWithInput('WELL_GROUP', 'WELL_GROUP_input')">
+                <input type="number" id="WELL_GROUP_input" min="0" max="10" step="1" value="0" oninput="syncInputWithSlider('WELL_GROUP_input', 'WELL_GROUP')">
+            </div>
+            <button type="submit">Predict</button>
+        </form>
+        {% if prediction %}
+        <div class="prediction-result">
+            <h2>Prediction Result:</h2>
+            <p>{{ prediction }}</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <script>
+        function syncSliderWithInput(sliderId, inputId) {
+            var slider = document.getElementById(sliderId);
+            var input = document.getElementById(inputId);
+            input.value = slider.value;  // Initialize input value to slider value
+            slider.oninput = function() {
+                input.value = this.value;
+            }
+        }
+
+        function syncInputWithSlider(inputId, sliderId) {
+            var input = document.getElementById(inputId);
+            var slider = document.getElementById(sliderId);
+            slider.value = input.value;  // Initialize slider value to input value
+            input.oninput = function() {
+                slider.value = this.value;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            syncSliderWithInput('S5', 'S5_input');
+            syncSliderWithInput('S8', 'S8_input');
+            syncSliderWithInput('S13', 'S13_input');
+            syncSliderWithInput('S15', 'S15_input');
+            syncSliderWithInput('S16', 'S16_input');
+            syncSliderWithInput('S19', 'S19_input');
+            syncSliderWithInput('S18', 'S18_input');
+            syncSliderWithInput('MACHINE_AGE', 'MACHINE_AGE_input');
+            syncSliderWithInput('WELL_GROUP', 'WELL_GROUP_input');
+            syncInputWithSlider('S5_input', 'S5');
+            syncInputWithSlider('S8_input', 'S8');
+            syncInputWithSlider('S13_input', 'S13');
+            syncInputWithSlider('S15_input', 'S15');
+            syncInputWithSlider('S16_input', 'S16');
+            syncInputWithSlider('S19_input', 'S19');
+            syncInputWithSlider('S18_input', 'S18');
+            syncInputWithSlider('MACHINE_AGE_input', 'MACHINE_AGE');
+            syncInputWithSlider('WELL_GROUP_input', 'WELL_GROUP');
+        });
+    </script>
+</body>
+</html>

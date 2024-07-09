@@ -1,0 +1,12 @@
+runtime: python311
+entrypoint: gunicorn -b :$PORT flask_app:app
+
+env_variables:
+  OPENAI_API_KEY: 'sk-proj-eAjzhHlr9lib6LAsw9PgT3BlbkFJXZFno2wnPNtEAHTlEUFC'
+
+handlers:
+  - url: /static
+    static_dir: static
+
+  - url: /.*
+    script: auto
