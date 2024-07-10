@@ -83,5 +83,6 @@ def analyze_predictions(prediction_result, features):
     final_output = f"### Prediction Result:\n{prediction_result}\n\n### Detailed Insights and Maintenance Recommendations:\n{insights}"
     return final_output
 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
