@@ -4,13 +4,60 @@
     <meta charset="UTF-8">
     <title>Bulk Upload - Machine Failure Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
-    <h1>Bulk Upload</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file">Choose a CSV file to upload:</label>
-        <input type="file" name="file" id="file" accept=".csv" required>
-        <button type="submit">Upload</button>
-    </form>
+    <header>
+        <h1>
+            <img src="{{ url_for('static', filename='images/machine_failure.png') }}" alt="Logo">
+            Machine Failure Detection
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/bulk_upload">Bulk Upload</a></li>
+                <li><a href="#" onclick="toggleFeatureInput()">Enter Feature Values</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="upload-container" style="margin-top: 100px;"> <!-- Adjusted margin top -->
+        <h1>Upload Machine Measurement Data</h1>
+        <div class="download-button-container">
+            <a href="{{ url_for('static', filename='sample_data.csv') }}" class="btn" download>Download Sample Data</a>
+        </div>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file">Choose a CSV file to upload:</label>
+            <input type="file" name="file" id="file" accept=".csv" required>
+            <button type="submit">Upload and Predict</button>
+        </form>
+        <div class="center-container">
+            <div id="file-info" class="file-info-container">
+                <p>Machine Failure Count: <span class="failure-count">{{ failure_count }}</span></p>
+                <p>Machine Non-Failure Count: <span class="non-failure-count"> {{ non_failure_count }}</span></p>
+            </div>
+        </div>
+    </section>
+
+    {% if data_html %}
+    <section>
+        <h2>Prediction Results</h2>
+        <div class="container">
+            {{ data_html|safe }}
+        </div>
+    </section>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2024 Machine Failure Detection. All rights reserved.</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
 </body>
 </html>

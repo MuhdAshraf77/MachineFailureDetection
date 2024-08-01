@@ -7,71 +7,90 @@
 </head>
 <body>
     <header>
-        <h1>Machine Failure Detection</h1>
+        <h1>
+            <img src="{{ url_for('static', filename='images/machine_failure.png') }}" alt="Logo">
+            Machine Failure Detection
+        </h1>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/bulk_upload">Bulk Upload</a></li>
+                <li><a href="#" onclick="toggleFeatureInput()">Enter Feature Values</a></li>
             </ul>
         </nav>
     </header>
 
     <section>
-        <form action="/predict" method="post" id="predictForm">
-            <div class="slider-container">
-                <label for="S5">S5:</label>
-                <input type="range" id="S5" name="S5" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S5', 'S5_input')">
-                <input type="number" id="S5_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S5_input', 'S5')">
+        <div class="container" style="margin-top: 100px;"> <!-- Adjusted margin top -->
+            <form action="/predict" method="post" id="predictForm">
+                <div class="slider-container">
+                    <label for="S5">S5:</label>
+                    <input type="range" id="S5" name="S5" min="0" max="15000" step="0.0001" value="{{ request.form.get('S5', 0) }}" oninput="syncSliderWithInput('S5', 'S5_input')">
+                    <input type="number" id="S5_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S5', 0) }}" oninput="syncInputWithSlider('S5_input', 'S5')">
+                </div>
+                <div class="slider-container">
+                    <label for="S8">S8:</label>
+                    <input type="range" id="S8" name="S8" min="0" max="15000" step="0.0001" value="{{ request.form.get('S8', 0) }}" oninput="syncSliderWithInput('S8', 'S8_input')">
+                    <input type="number" id="S8_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S8', 0) }}" oninput="syncInputWithSlider('S8_input', 'S8')">
+                </div>
+                <div class="slider-container">
+                    <label for="S13">S13:</label>
+                    <input type="range" id="S13" name="S13" min="0" max="15000" step="0.0001" value="{{ request.form.get('S13', 0) }}" oninput="syncSliderWithInput('S13', 'S13_input')">
+                    <input type="number" id="S13_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S13', 0) }}" oninput="syncInputWithSlider('S13_input', 'S13')">
+                </div>
+                <div class="slider-container">
+                    <label for="S15">S15:</label>
+                    <input type="range" id="S15" name="S15" min="0" max="15000" step="0.0001" value="{{ request.form.get('S15', 0) }}" oninput="syncSliderWithInput('S15', 'S15_input')">
+                    <input type="number" id="S15_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S15', 0) }}" oninput="syncInputWithSlider('S15_input', 'S15')">
+                </div>
+                <div class="slider-container">
+                    <label for="S16">S16:</label>
+                    <input type="range" id="S16" name="S16" min="0" max="15000" step="0.0001" value="{{ request.form.get('S16', 0) }}" oninput="syncSliderWithInput('S16', 'S16_input')">
+                    <input type="number" id="S16_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S16', 0) }}" oninput="syncInputWithSlider('S16_input', 'S16')">
+                </div>
+                <div class="slider-container">
+                    <label for="S19">S19:</label>
+                    <input type="range" id="S19" name="S19" min="0" max="15000" step="0.0001" value="{{ request.form.get('S19', 0) }}" oninput="syncSliderWithInput('S19', 'S19_input')">
+                    <input type="number" id="S19_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S19', 0) }}" oninput="syncInputWithSlider('S19_input', 'S19')">
+                </div>
+                <div class="slider-container">
+                    <label for="S18">S18:</label>
+                    <input type="range" id="S18" name="S18" min="0" max="15000" step="0.0001" value="{{ request.form.get('S18', 0) }}" oninput="syncSliderWithInput('S18', 'S18_input')">
+                    <input type="number" id="S18_input" min="0" max="15000" step="0.0001" value="{{ request.form.get('S18', 0) }}" oninput="syncInputWithSlider('S18_input', 'S18')">
+                </div>
+                <div class="slider-container">
+                    <label for="MACHINE_AGE">Machine Age:</label>
+                    <input type="range" id="MACHINE_AGE" name="MACHINE_AGE" min="0" max="10000" step="1" value="{{ request.form.get('MACHINE_AGE', 0) }}" oninput="syncSliderWithInput('MACHINE_AGE', 'MACHINE_AGE_input')">
+                    <input type="number" id="MACHINE_AGE_input" min="0" max="10000" step="1" value="{{ request.form.get('MACHINE_AGE', 0) }}" oninput="syncInputWithSlider('MACHINE_AGE_input', 'MACHINE_AGE')">
+                </div>
+                <div class="slider-container">
+                    <label for="WELL_GROUP">Well Group:</label>
+                    <input type="range" id="WELL_GROUP" name="WELL_GROUP" min="0" max="10" step="1" value="{{ request.form.get('WELL_GROUP', 0) }}" oninput="syncSliderWithInput('WELL_GROUP', 'WELL_GROUP_input')">
+                    <input type="number" id="WELL_GROUP_input" min="0" max="10" step="1" value="{{ request.form.get('WELL_GROUP', 0) }}" oninput="syncInputWithSlider('WELL_GROUP_input', 'WELL_GROUP')">
+                </div>
+                <button type="submit">Predict</button>
+            </form>
+            {% if prediction %}
+            <div id="prediction" class="prediction-result">
+                <h2>Prediction Result:</h2>
+                <p>{{ prediction }}</p>
             </div>
-            <div class="slider-container">
-                <label for="S8">S8:</label>
-                <input type="range" id="S8" name="S8" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S8', 'S8_input')">
-                <input type="number" id="S8_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S8_input', 'S8')">
-            </div>
-            <div class="slider-container">
-                <label for="S13">S13:</label>
-                <input type="range" id="S13" name="S13" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S13', 'S13_input')">
-                <input type="number" id="S13_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S13_input', 'S13')">
-            </div>
-            <div class="slider-container">
-                <label for="S15">S15:</label>
-                <input type="range" id="S15" name="S15" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S15', 'S15_input')">
-                <input type="number" id="S15_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S15_input', 'S15')">
-            </div>
-            <div class="slider-container">
-                <label for="S16">S16:</label>
-                <input type="range" id="S16" name="S16" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S16', 'S16_input')">
-                <input type="number" id="S16_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S16_input', 'S16')">
-            </div>          
-            <div class="slider-container">
-                <label for="S19">S19:</label>
-                <input type="range" id="S19" name="S19" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S19', 'S19_input')">
-                <input type="number" id="S19_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S19_input', 'S19')">
-            </div>
-            <div class="slider-container">
-                <label for="S18">S18:</label>
-                <input type="range" id="S18" name="S18" min="0" max="15000" step="0.0001" value="0" oninput="syncSliderWithInput('S18', 'S18_input')">
-                <input type="number" id="S18_input" min="0" max="15000" step="0.0001" value="0" oninput="syncInputWithSlider('S18_input', 'S18')">
-            </div>
-            <div class="slider-container">
-                <label for="MACHINE_AGE">Machine Age:</label>
-                <input type="range" id="MACHINE_AGE" name="MACHINE_AGE" min="0" max="10000" step="1" value="0" oninput="syncSliderWithInput('MACHINE_AGE', 'MACHINE_AGE_input')">
-                <input type="number" id="MACHINE_AGE_input" min="0" max="10000" step="1" value="0" oninput="syncInputWithSlider('MACHINE_AGE_input', 'MACHINE_AGE')">
-            </div>
-            <div class="slider-container">
-                <label for="WELL_GROUP">Well Group:</label>
-                <input type="range" id="WELL_GROUP" name="WELL_GROUP" min="0" max="10" step="1" value="0" oninput="syncSliderWithInput('WELL_GROUP', 'WELL_GROUP_input')">
-                <input type="number" id="WELL_GROUP_input" min="0" max="10" step="1" value="0" oninput="syncInputWithSlider('WELL_GROUP_input', 'WELL_GROUP')">
-            </div>
-            <button type="submit">Predict</button>
-        </form>
-        {% if prediction %}
-        <div class="prediction-result">
-            <h2>Prediction Result:</h2>
-            <p>{{ prediction }}</p>
+            {% endif %}
         </div>
-        {% endif %}
     </section>
+
+    <div id="feature-input">
+        <h2>Enter Feature Values (separated by commas):</h2>
+        <textarea id="feature-values"></textarea>
+        <div class="button-container">
+            <button class="close-btn" onclick="toggleFeatureInput()">Close</button>
+            <button class="save-btn" onclick="saveFeatureValues()">Save</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Machine Failure Detection. All rights reserved.</p>
+    </footer>
 
     <script>
         function syncSliderWithInput(sliderId, inputId) {
@@ -112,6 +131,25 @@
             syncInputWithSlider('MACHINE_AGE_input', 'MACHINE_AGE');
             syncInputWithSlider('WELL_GROUP_input', 'WELL_GROUP');
         });
+
+        function toggleFeatureInput() {
+            var featureInput = document.getElementById('feature-input');
+            featureInput.style.display = featureInput.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveFeatureValues() {
+            var featureValues = document.getElementById('feature-values').value.split(',');
+            var sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach((slider, index) => {
+                if (featureValues[index]) {
+                    slider.value = parseFloat(featureValues[index]);
+                    var input = document.getElementById(slider.id + '_input');
+                    input.value = slider.value;
+                }
+            });
+            toggleFeatureInput();
+        }
     </script>
 </body>
 </html>
+
